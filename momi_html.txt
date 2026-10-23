@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="ka">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ანბანის ბაღი</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Georgian:wght@400;700;900&family=Noto+Sans+Georgian:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f3ecf1; --surface:#e6d8e2; --ink:#2a1020; --muted:#6d4f62;
+  --accent:#b3223f; --on-accent:#fff7f9; --leaf:#4f7a35;
+  color-scheme:light;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#240c1a; --surface:#3a1a2c; --ink:#f6e9f1; --muted:#c3a3b6;
+    --accent:#e0415f; --on-accent:#2a0a14; --leaf:#9cc77a; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#240c1a; --surface:#3a1a2c; --ink:#f6e9f1; --muted:#c3a3b6;
+  --accent:#e0415f; --on-accent:#2a0a14; --leaf:#9cc77a; color-scheme:dark;
+}
+html{height:100%;scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 1.05rem/1.6 "Noto Sans Georgian",system-ui,sans-serif;min-height:100%}
+main{max-width:1040px;margin:0 auto;padding:2rem 1.25rem 4rem}
+h1{font:900 clamp(2.6rem,9vw,5.5rem)/1.05 "Noto Serif Georgian",Georgia,serif;margin:0 0 .5rem;letter-spacing:-.01em}
+.lead{max-width:34rem;color:var(--muted);margin:0 0 2rem}
+.stage{display:grid;grid-template-columns:minmax(0,15rem) 1fr;gap:1.5rem;align-items:stretch;margin-bottom:1.5rem}
+.panel{background:var(--surface);border-radius:1.5rem;padding:1.25rem;text-align:center;display:flex;flex-direction:column;justify-content:center;min-height:15rem}
+.big{font:900 7rem/1 "Noto Serif Georgian",Georgia,serif;color:var(--accent);transition:transform .15s}
+.big.pop{transform:scale(1.12)}
+.name{font-weight:600;font-size:1.25rem;margin-top:.25rem}
+.word{color:var(--muted)}
+.compose{display:flex;flex-direction:column;justify-content:center;gap:.75rem}
+label{font-weight:600}
+.row{display:flex;gap:.5rem;flex-wrap:wrap}
+input{flex:1 1 12rem;min-width:0;font:inherit;font-size:1.2rem;padding:.8rem 1rem;border-radius:999px;border:2px solid var(--surface);background:var(--bg);color:var(--ink)}
+button{font:inherit;cursor:pointer}
+.play{padding:.8rem 1.6rem;border-radius:999px;border:0;background:var(--accent);color:var(--on-accent);font-weight:600}
+.hint{color:var(--muted);font-size:.95rem;margin:0}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(4.6rem,1fr));gap:.6rem;margin-top:2rem}
+.tile{aspect-ratio:1;border:0;border-radius:1rem;background:var(--surface);color:var(--ink);font:700 2rem "Noto Serif Georgian",Georgia,serif;transition:background .12s,color .12s,transform .12s}
+.tile:hover{transform:translateY(-2px)}
+.tile.on{background:var(--accent);color:var(--on-accent);transform:scale(1.08)}
+.tile.hard{box-shadow:inset 0 -4px 0 var(--leaf)}
+.legend{margin-top:1rem;color:var(--muted);font-size:.9rem}
+.legend i{display:inline-block;width:1.2rem;height:.3rem;background:var(--leaf);border-radius:2px;vertical-align:middle;margin-right:.35rem}
+:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+@media (max-width:640px){.stage{grid-template-columns:1fr}.panel{min-height:11rem}.big{font-size:5rem}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<main>
+  <h1>ანბანის ბაღი</h1>
+  <p class="lead">33 ასო, 33 ნოტა. დააჭირე ასოს, ჩაწერე სიტყვა და მოუსმინე, როგორ ჟღერს ქართული ანბანი.</p>
+
+  <section class="stage" aria-live="polite">
+    <div class="panel">
+      <div class="big" id="big">ა</div>
+      <div class="name" id="name">ანი</div>
+      <div class="word" id="word">ალუბალი</div>
+    </div>
+    <div class="compose">
+      <label for="txt">ჩაწერე სიტყვა, რომ მელოდიად გადაიქცეს</label>
+      <div class="row">
+        <input id="txt" value="გაუმარჯოს" autocomplete="off" spellcheck="false">
+        <button class="play" id="go">დაკვრა</button>
+      </div>
+      <p class="hint">კლავიატურაზე ქართული ასოების დაჭერითაც დაუკრავ.</p>
+    </div>
+  </section>
+
+  <div class="grid" id="grid" role="group" aria-label="ქართული ანბანი"></div>
+  <p class="legend"><i></i>მწვანე ხაზი აქვს ასოებს, რომლებიც ხმოვანი არ არის და ქართულში განსაკუთრებულ, ჩახერგილ ბგერას გამოხატავს.</p>
+</main>
+<script>
+const L=[["ა","ანი","ალუბალი"],["ბ","ბანი","ბაღი"],["გ","განი","გემო"],["დ","დონი","დედა"],["ე","ენი","ენა"],["ვ","ვინი","ვაშლი"],["ზ","ზენი","ზღვა"],["თ","თანი","თევზი"],["ი","ინი","ისარი"],["კ","კანი","კატა"],["ლ","ლასი","ლომი"],["მ","მანი","მთა"],["ნ","ნარი","ნავი"],["ო","ონი","ოქრო"],["პ","პარი","პური"],["ჟ","ჟანი","ჟოლო"],["რ","რაე","რძე"],["ს","სანი","სახლი"],["ტ","ტარი","ტყე"],["უ","უნი","ურემი"],["ფ","ფარი","ფრინველი"],["ქ","ქანი","ქარი"],["ღ","ღანი","ღვინო"],["ყ","ყარი","ყავა"],["შ","შინი","შუქი"],["ჩ","ჩინი","ჩიტი"],["ც","ცანი","ცა"],["ძ","ძილი","ძაღლი"],["წ","წილი","წყალი"],["ჭ","ჭარი","ჭიქა"],["ხ","ხანი","ხე"],["ჯ","ჯანი","ჯვარი"],["ჰ","ჰაე","ჰაერი"]];
+const HARD=new Set("კპტქყწჭთფჩცღ".split(""));
+const grid=document.getElementById("grid"),big=document.getElementById("big"),nm=document.getElementById("name"),wd=document.getElementById("word"),tiles=[],idx={};
+const PENT=[0,2,4,7,9];
+let ctx=null;
+function freq(i){const k=i%15;return 196*Math.pow(2,(PENT[k%5]+12*Math.floor(k/5))/12)}
+function tone(i){
+  try{
+    ctx=ctx||new (window.AudioContext||window.webkitAudioContext)();
+    if(ctx.state==="suspended")ctx.resume();
+    const t=ctx.currentTime,o=ctx.createOscillator(),g=ctx.createGain();
+    o.type="triangle";o.frequency.value=freq(i);
+    g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(.35,t+.02);g.gain.exponentialRampToValueAtTime(.001,t+.9);
+    o.connect(g).connect(ctx.destination);o.start(t);o.stop(t+.95);
+  }catch(e){}
+}
+function play(i){
+  tone(i);
+  const [c,n,w]=L[i];
+  big.textContent=c;nm.textContent=n;wd.textContent=w;
+  big.classList.add("pop");setTimeout(()=>big.classList.remove("pop"),140);
+  tiles[i].classList.add("on");setTimeout(()=>tiles[i].classList.remove("on"),260);
+}
+L.forEach(([c,n],i)=>{
+  idx[c]=i;
+  const b=document.createElement("button");
+  b.className="tile"+(HARD.has(c)?" hard":"");
+  b.textContent=c;b.setAttribute("aria-label",c+", "+n);
+  b.addEventListener("click",()=>play(i));
+  grid.appendChild(b);tiles.push(b);
+});
+let timers=[];
+function melody(){
+  timers.forEach(clearTimeout);timers=[];
+  let t=0;
+  for(const ch of document.getElementById("txt").value){
+    if(ch in idx){const i=idx[ch];timers.push(setTimeout(()=>play(i),t));t+=260}
+    else t+=130;
+  }
+}
+document.getElementById("go").addEventListener("click",melody);
+document.getElementById("txt").addEventListener("keydown",e=>{if(e.key==="Enter")melody()});
+document.addEventListener("keydown",e=>{
+  if(e.target.tagName==="INPUT"||e.ctrlKey||e.metaKey||e.altKey)return;
+  if(e.key in idx)play(idx[e.key]);
+});
+</script>
+</body>
+</html>
